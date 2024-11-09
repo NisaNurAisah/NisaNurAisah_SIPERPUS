@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/books', function(){
 //     return view('books.index');
 // });
-
-Route::get('/books', [BookController::class,'index']);
+Route::group(['middleware'=> ('role:mahasiswa')], function(){
+    Route::get('/books', [BookController::class,'index']);
+});
 
 Route::get('/', function () {
     return view('welcome');
