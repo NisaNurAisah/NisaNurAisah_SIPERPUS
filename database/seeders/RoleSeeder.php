@@ -16,11 +16,11 @@ class RoleSeeder extends Seeder
     {
         //pustakawan
         Role::create(['name'=> 'pustakawan']);
-        Permission::create(['name'=>'kelola_buku']);
+        Permission::create(['name'=>'edit_book']);
         Permission::create(['name'=>'edit_user']);
 
         //mahasiswa
         Role::create(['name'=> 'mahasiswa']);
-        Permission::create(['name'=>'lihat_buku']);
+        Permission::create(['name'=>'view_book']);
     }
 }

@@ -1,23 +1,8 @@
 <?php
 
-use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
-
-// GET, POST, PUT, PATCH, DELETE
-// PUT update data harus semua (judul, halaman, penulis)
-// Patch update data minimal satu(judul)
-
-// Route::get('/books', function(){
-//     return 'Daftar Buku';
-// });
-
-// Route::get('/books', function(){
-//     return view('books.index');
-// });
-Route::group(['middleware'=> ('role:mahasiswa')], function(){
-    Route::get('/books', [BookController::class,'index']);
-});
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,6 +16,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    Route::get('/books', [BookController::class, 'index'])->name('book');
+});
+
+Route::group(['middleware' => ['role:pustakawan']], function () {
+    Route::get('/books/create', [BookController::class, 'create'])->name('book.create');
+    Route::get('/books/edit/{id}', [BookController::class, 'edit'])->name('book.edit');
+    Route::post('/books/store', [BookController::class, 'store'])->name('book.store');
+    Route::match(['put','patch'],'/books/{id}/update', [BookController::class, 'update'])->name('book.update');
+    Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('book.destroy');
 });
 
 require __DIR__.'/auth.php';
